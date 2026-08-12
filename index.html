@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>개인정보처리방침 – 슈팅 서바이벌 게임 : 갓 스파이더</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* ── 우주/네온 테마 컬러 (참고 파일의 라이트 그린 테마와 다르게, 게임 자체의 다크 네이비 + 시안/레드 네온 톤을 사용) ── */
+    --bg:         #05070f;
+    --surface:    #0c1120;
+    --surface-2:  #0f1626;
+    --border:     #1c2740;
+    --accent:     #4cc9f0;
+    --accent-2:   #ff2d4d;
+    --accent-lt:  rgba(76,201,240,.12);
+    --text:       #e9f1fb;
+    --sub:        #aebdd4;
+    --muted:      #64738f;
+    --tag-bg:     #0f1a2e;
+    --serif:      'Orbitron', sans-serif;
+    --sans:       'Noto Sans KR', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    font-size: 15px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--surface);
+    border-bottom: 2px solid var(--accent);
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 62px;
+    box-shadow: 0 2px 16px rgba(0,0,0,.5);
+    flex-wrap: wrap;
+    gap: .4rem;
+  }
+  .logo {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -.01em;
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+  }
+  .logo-icon { font-size: 1.3rem; filter: drop-shadow(0 0 6px rgba(76,201,240,.7)); }
+  .header-meta {
+    font-size: .72rem;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: radial-gradient(ellipse at 50% 20%, #1a2440 0%, #0a0e1c 55%, #05060d 100%);
+    color: #fff;
+    padding: 4rem 2rem 3.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  /* 참고 파일의 격자무늬 대신 별(점) 패턴으로 우주 배경 표현 */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1.5px 1.5px at 20px 30px, rgba(255,255,255,.55) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 90px 70px, rgba(255,255,255,.4) 50%, transparent 51%),
+      radial-gradient(1px 1px at 140px 20px, rgba(255,255,255,.5) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 180px 90px, rgba(255,255,255,.35) 50%, transparent 51%),
+      radial-gradient(1px 1px at 50px 110px, rgba(255,255,255,.45) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 230px 40px, rgba(255,255,255,.4) 50%, transparent 51%);
+    background-size: 240px 140px;
+    opacity: .8;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    left: 50%; top: 30%;
+    width: 520px; height: 520px;
+    transform: translate(-50%,-50%);
+    background: radial-gradient(circle, rgba(255,45,77,.16) 0%, rgba(255,45,77,0) 70%);
+    pointer-events: none;
+  }
+  .hero-inner { position: relative; z-index: 1; }
+  .hero-label {
+    display: inline-block;
+    background: rgba(76,201,240,.12);
+    border: 1px solid rgba(76,201,240,.4);
+    border-radius: 2rem;
+    padding: .3rem 1rem;
+    font-size: .72rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(1.35rem, 4.4vw, 2.15rem);
+    font-weight: 900;
+    line-height: 1.4;
+    margin-bottom: .9rem;
+    letter-spacing: -.01em;
+    text-shadow: 0 0 24px rgba(76,201,240,.35);
+  }
+  .hero p {
+    font-size: .9rem;
+    opacity: .78;
+    font-weight: 300;
+    max-width: 480px;
+    margin: 0 auto 1.5rem;
+  }
+  .hero-dates {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .hero-date-item {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: .5rem;
+    padding: .4rem .9rem;
+    font-size: .76rem;
+    font-weight: 400;
+  }
+  .hero-date-item strong { color: var(--accent); font-weight: 700; }
+
+  /* ── LAYOUT ── */
+  .wrapper {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 5rem;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  /* ── TOC ── */
+  .toc {
+    position: sticky;
+    top: 82px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: .75rem;
+    padding: 1.2rem 1rem;
+    box-shadow: 0 1px 10px rgba(0,0,0,.4);
+  }
+  .toc-title {
+    font-family: var(--serif);
+    font-size: .72rem;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: .9rem;
+    padding-bottom: .6rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .toc ol { list-style: none; counter-reset: toc; }
+  .toc ol li { counter-increment: toc; margin-bottom: .35rem; }
+  .toc ol li a {
+    text-decoration: none;
+    color: var(--sub);
+    font-size: .78rem;
+    line-height: 1.4;
+    display: flex;
+    gap: .4rem;
+    transition: color .2s;
+    font-weight: 400;
+  }
+  .toc ol li a::before {
+    content: counter(toc, decimal-leading-zero);
+    color: var(--accent);
+    font-size: .68rem;
+    min-width: 1.4rem;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+  }
+  .toc ol li a:hover { color: var(--accent); }
+
+  /* ── MAIN CONTENT ── */
+  .content { min-width: 0; }
+
+  .label-pill {
+    display: inline-block;
+    background: var(--accent-lt);
+    color: var(--accent);
+    border-radius: 2rem;
+    padding: .2rem .8rem;
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .05em;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(76,201,240,.25);
+  }
+
+  section { margin-bottom: 3rem; scroll-margin-top: 80px; }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 1.1rem;
+    padding-bottom: .6rem;
+    border-bottom: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    letter-spacing: -.01em;
+  }
+  h2 .sec-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent);
+    color: #05070f;
+    border-radius: .3rem;
+    font-size: .68rem;
+    font-weight: 900;
+    min-width: 1.6rem;
+    height: 1.6rem;
+    padding: 0 .4rem;
+    font-family: 'Courier New', monospace;
+  }
+
+  p { margin-bottom: .9rem; color: var(--sub); }
+  p:last-child { margin-bottom: 0; }
+
+  /* ── TABLE ── */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 1rem 0;
+    border-radius: .6rem;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 8px rgba(0,0,0,.35);
+  }
+  table { width: 100%; border-collapse: collapse; font-size: .84rem; }
+  thead th {
+    background: var(--surface-2);
+    color: var(--text);
+    font-weight: 600;
+    padding: .75rem 1rem;
+    text-align: left;
+    border-bottom: 1.5px solid var(--border);
+    white-space: nowrap;
+    font-size: .78rem;
+    letter-spacing: .02em;
+  }
+  tbody td {
+    padding: .7rem 1rem;
+    color: var(--sub);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.6;
+    background: var(--surface);
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: #101a30; }
+
+  /* ── INFO BOX ── */
+  .infobox {
+    background: var(--accent-lt);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 .5rem .5rem 0;
+    padding: 1rem 1.2rem;
+    margin: 1.2rem 0;
+    font-size: .85rem;
+    color: var(--sub);
+  }
+  .infobox strong { color: var(--accent); }
+
+  .notice-box {
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    border-radius: .6rem;
+    padding: 1rem 1.2rem;
+    margin: 1.2rem 0;
+    font-size: .85rem;
+    color: var(--sub);
+  }
+  .notice-box strong { color: var(--text); font-weight: 600; }
+
+  /* ── LIST ── */
+  ul.doc-list, ol.doc-list {
+    padding-left: 1.2rem;
+    margin: .6rem 0 .9rem;
+    color: var(--sub);
+    font-size: .9rem;
+  }
+  ul.doc-list li, ol.doc-list li { margin-bottom: .4rem; line-height: 1.7; }
+  ul.doc-list li::marker { color: var(--accent); }
+
+  /* ── CARD ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .9rem;
+    margin: 1rem 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: .6rem;
+    padding: 1rem 1.1rem;
+    font-size: .84rem;
+  }
+  .card-title {
+    font-weight: 600;
+    color: var(--text);
+    font-size: .82rem;
+    margin-bottom: .4rem;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+  }
+  .card-title .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-2); flex-shrink: 0; box-shadow: 0 0 6px rgba(255,45,77,.8); }
+  .card p { font-size: .82rem; margin: 0; }
+
+  /* ── CONTACT BOX ── */
+  .contact-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: .75rem;
+    padding: 1.3rem 1.5rem;
+    margin: 1rem 0;
+    box-shadow: 0 1px 8px rgba(0,0,0,.35);
+  }
+  .contact-title {
+    font-family: var(--serif);
+    font-size: .9rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: .8rem;
+    padding-bottom: .5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .contact-row {
+    display: flex;
+    gap: .5rem;
+    align-items: flex-start;
+    font-size: .85rem;
+    color: var(--sub);
+    margin-bottom: .35rem;
+  }
+  .contact-row .cl { font-weight: 600; color: var(--text); min-width: 6rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #04060c;
+    color: rgba(255,255,255,.45);
+    text-align: center;
+    padding: 2rem;
+    font-size: .78rem;
+    line-height: 1.8;
+    border-top: 1px solid var(--border);
+  }
+  footer strong { color: rgba(255,255,255,.8); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 680px) {
+    .wrapper { grid-template-columns: 1fr; }
+    .toc { position: static; }
+    .card-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div id="lang-ko" class="lang-block">
+<!-- ─── HEADER ─── -->
+<header>
+  <div class="logo"><span class="logo-icon">🕷️</span>슈팅 서바이벌 게임 : 갓 스파이더</div>
+  <div class="header-meta">개인정보처리방침 · 2025년 개정 기준 적용</div>
+</header>
+
+<!-- ─── HERO ─── -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">Privacy Policy</div>
+    <h1>개인정보처리방침</h1>
+    <p>슈팅 서바이벌 게임 : 갓 스파이더는 이용자의 개인정보를 소중히 여기며<br>「개인정보 보호법」 및 관련 법령을 철저히 준수합니다.</p>
+    <div class="hero-dates">
+      <div class="hero-date-item"><strong>시행일</strong> 2026년 08월 12일</div>
+      <div class="hero-date-item"><strong>근거</strong> 개인정보보호위원회 고시 제2025-4호</div>
+      <div class="hero-date-item"><strong>법령</strong> 개인정보 보호법 제30조</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MAIN ─── -->
+<div class="wrapper">
+
+  <!-- TOC -->
+  <nav class="toc">
+    <div class="toc-title">목차</div>
+    <ol>
+      <li><a href="#s1">개인정보 처리 목적 및 수집 항목</a></li>
+      <li><a href="#s2">개인정보 보유 및 이용 기간</a></li>
+      <li><a href="#s3">개인정보의 제3자 제공</a></li>
+      <li><a href="#s4">외부 서비스(광고 SDK) 연동</a></li>
+      <li><a href="#s5">게임 플레이 정보의 처리</a></li>
+      <li><a href="#s6">정보주체의 권리·의무 및 행사방법</a></li>
+      <li><a href="#s7">개인정보의 파기</a></li>
+      <li><a href="#s8">개인정보 안전성 확보 조치</a></li>
+      <li><a href="#s9">자동 수집 장치 및 광고 식별자</a></li>
+      <li><a href="#s10">개인정보 보호책임자</a></li>
+      <li><a href="#s11">권익침해 구제방법</a></li>
+      <li><a href="#s12">처리방침 변경</a></li>
+    </ol>
+  </nav>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <div class="label-pill">「개인정보 보호법」 제30조 · 2025년 4월 개정 지침 반영</div>
+
+    <div class="notice-box">
+      <strong>📌 안내</strong>&nbsp; 슈팅 서바이벌 게임 : 갓 스파이더(이하 "앱")는 별도의 회원가입 없이 이용 가능한 서비스입니다. 앱은 자체 서버를 운영하지 않으며, 조작 설정·언어 설정 등 이용자가 변경한 정보는 이용자의 기기(단말기) 내부에만 저장됩니다.
+    </div>
+
+    <!-- ── 제1조 ── -->
+    <section id="s1">
+      <h2><span class="sec-num">01</span> 개인정보 처리 목적 및 수집 항목</h2>
+      <p>앱은 「개인정보 보호법」에 따라 서비스 제공을 위해 필요 최소한의 범위에서 개인정보를 수집·이용합니다.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>처리 목적</th>
+              <th>수집 항목</th>
+              <th>수집 근거</th>
+              <th>보유 기간</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>조작 설정 저장(좌우 조작 반전)</td>
+              <td>조작 반전 여부(ON/OFF) 설정값</td>
+              <td>정보주체 동의<br>(설정 화면에서 직접 변경)</td>
+              <td>앱 삭제 또는 설정 초기화 시까지<br>(기기 내 보관)</td>
+            </tr>
+            <tr>
+              <td>언어 설정 유지</td>
+              <td>선택 언어(한국어/영어)</td>
+              <td>정보주체 동의<br>(언어 전환 버튼 클릭)</td>
+              <td>앱 재실행 시까지<br>(기기 내 임시 보관, 서버 미전송)</td>
+            </tr>
+            <tr>
+              <td>보상형 광고 시청에 따른 부활(리바이브) 기능 제공</td>
+              <td>광고 식별자(ADID) 등 기기 정보<br>(Google AdMob SDK를 통해 처리)</td>
+              <td>정보주체 동의<br>(광고 시청 버튼 클릭)</td>
+              <td>Google AdMob의 정책에 따름<br>(앱 자체는 별도 보관하지 않음)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="infobox">
+        <strong>동의 거부 안내:</strong> 조작 반전·언어 설정은 이용자 편의를 위한 항목으로, 설정하지 않아도 기본값(반전 OFF, 접속 환경 언어)으로 게임 이용에 지장이 없습니다. 보상형 광고 시청(부활 기능)은 선택 사항이며, 시청하지 않아도 게임의 기본 플레이(비행기 슈팅, 웨이브 진행 등)는 정상적으로 이용할 수 있습니다.
+      </div>
+    </section>
+
+    <!-- ── 제2조 ── -->
+    <section id="s2">
+      <h2><span class="sec-num">02</span> 개인정보 보유 및 이용 기간</h2>
+      <p>앱은 별도의 회원가입·로그인 절차가 없고 자체 서버도 운영하지 않으므로, 이용자가 변경한 설정 정보는 원칙적으로 이용자의 기기 내부(로컬/세션 저장소)에만 보관되며, 앱을 삭제하거나 기기 저장소를 초기화하면 즉시 파기됩니다.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-title"><span class="dot"></span>조작 반전 설정</div>
+          <p>기기 내 로컬 저장소(localStorage)에 보관되며, 서버로 전송되지 않습니다. 이용자가 다시 변경하거나 앱을 삭제할 때까지 유지됩니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="dot"></span>언어 설정</div>
+          <p>기기 내 세션 저장소(sessionStorage)에 임시 보관되며, 앱(브라우저 탭)을 완전히 종료하면 자동으로 사라집니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="dot"></span>광고 식별자 등 기기 정보</div>
+          <p>Google AdMob SDK가 보상형 광고 게재 목적으로 처리하며, 앱 자체는 이 정보를 수집·저장하지 않습니다. 보유 기간은 Google의 정책을 따릅니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="dot"></span>점수·웨이브 등 게임 진행 정보</div>
+          <p>서버로 전송되거나 영구 저장되지 않으며, 게임을 종료(재시작)하면 소멸됩니다. 자세한 내용은 제5조를 참고하세요.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 제3조 ── -->
+    <section id="s3">
+      <h2><span class="sec-num">03</span> 개인정보의 제3자 제공</h2>
+      <p>앱은 정보주체의 개인정보를 원칙적으로 제3자에게 제공하지 않습니다. 다만 아래의 경우에는 예외로 합니다.</p>
+      <ul class="doc-list">
+        <li>정보주체로부터 별도의 동의를 받은 경우</li>
+        <li>법률에 특별한 규정이 있거나 법령상 의무를 준수하기 위하여 불가피한 경우</li>
+        <li>정보주체 또는 법정대리인이 의사표시를 할 수 없는 상태에 있거나 주소불명 등으로 사전 동의를 받을 수 없는 경우로서 명백히 정보주체 또는 제3자의 생명·신체·재산의 이익을 위하여 필요하다고 인정되는 경우</li>
+      </ul>
+      <div class="infobox">
+        현재 앱은 이용자 정보를 별도 계약을 맺은 제3자에게 제공하고 있지 않습니다. 다만 보상형 광고 제공을 위해 Google AdMob SDK가 광고 식별자 등 기기 정보를 자체적으로 처리하며, 이는 회원 식별 없이 익명으로 처리됩니다. (제4조 참고)
+      </div>
+    </section>
+
+    <!-- ── 제4조 ── -->
+    <section id="s4">
+      <h2><span class="sec-num">04</span> 외부 서비스(광고 SDK) 연동</h2>
+      <p>앱은 자체 서버 없이 이용자의 기기에서 직접 아래의 외부 서비스(광고 SDK)를 호출하여 일부 기능을 제공합니다. 이는 전통적 의미의 위탁 계약과는 다르지만, 투명한 안내를 위해 아래와 같이 고지합니다.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>제공받는 자</th>
+              <th>전송(처리) 항목</th>
+              <th>이용 목적</th>
+              <th>비고</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Google AdMob (Google LLC)</td>
+              <td>광고 식별자(ADID) 등 기기 정보</td>
+              <td>보상형 광고 게재 및 시청 완료 시 게임 내 부활(리바이브) 제공</td>
+              <td>Google의 별도 개인정보처리방침이 적용됨</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Google AdMob과 관련한 자세한 사항은 Google의 개인정보처리방침(policies.google.com/privacy)에서 확인하실 수 있습니다.</p>
+    </section>
+
+    <!-- ── 제5조 ── -->
+    <section id="s5">
+      <h2><span class="sec-num">05</span> 게임 플레이 정보의 처리</h2>
+      <p>앱은 비행기(갓 스파이더)를 조종해 적을 처치하고 웨이브를 진행하는 슈팅 게임입니다. 이 과정에서 생성되는 점수, 처치 수, 웨이브 단계, 체력 등의 게임 진행 정보는 개인을 식별할 수 없는 게임 데이터로, 다음과 같이 처리됩니다.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-title"><span class="dot"></span>처리 방식</div>
+          <p>점수·웨이브·처치 수 등은 앱 실행 중 메모리(휘발성)에서만 계산·표시되며, 별도의 저장소나 서버로 전송되지 않습니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="dot"></span>보관 및 소멸</div>
+          <p>게임을 재시작하거나 앱을 종료하면 해당 회차의 진행 정보는 즉시 소멸되며 다시 복구되지 않습니다.</p>
+        </div>
+      </div>
+
+      <div class="infobox">
+        <strong>참고:</strong> 향후 업데이트로 순위표(랭킹) 등 서버 연동 기능이 추가될 경우, 이 개인정보처리방침을 사전에 개정하여 수집 항목과 목적을 별도로 안내하겠습니다.
+      </div>
+    </section>
+
+    <!-- ── 제6조 ── -->
+    <section id="s6">
+      <h2><span class="sec-num">06</span> 정보주체의 권리·의무 및 행사방법</h2>
+      <p>정보주체는 앱에 대해 언제든지 다음의 권리를 행사할 수 있습니다.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>권리 종류</th>
+              <th>내용</th>
+              <th>관련 법조항</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>열람 요구</strong></td>
+              <td>앱이 처리하는 본인의 개인정보(조작·언어 설정 등)를 확인할 수 있습니다. (앱 내 "설정" 화면에서 직접 확인 가능)</td>
+              <td>개인정보 보호법 제35조</td>
+            </tr>
+            <tr>
+              <td><strong>정정·삭제 요구</strong></td>
+              <td>조작 반전·언어 등 처리 중인 설정 정보가 사실과 다르거나 불필요한 경우 앱 내에서 직접 정정·삭제하거나 초기화를 요구할 수 있습니다.</td>
+              <td>개인정보 보호법 제36조</td>
+            </tr>
+            <tr>
+              <td><strong>처리정지 요구</strong></td>
+              <td>설정 정보의 처리를 일시적으로 중단하도록 요구할 수 있습니다.</td>
+              <td>개인정보 보호법 제37조</td>
+            </tr>
+            <tr>
+              <td><strong>동의 철회</strong></td>
+              <td>설정값 저장 및 광고 시청에 대한 동의를 언제든지 철회(설정 초기화, 광고 시청 미이용)할 수 있습니다.</td>
+              <td>개인정보 보호법 제37조</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="margin-top:1rem;">권리 행사는 「개인정보 보호법 시행령」 제41조 제1항에 따라 <strong>전자우편</strong>을 통해 하실 수 있으며, 청구 받은 날로부터 <strong>10일 이내</strong> 조치하겠습니다.</p>
+
+      <ul class="doc-list">
+        <li>만 14세 미만 아동의 경우 법정대리인이 권리를 행사할 수 있습니다.</li>
+        <li>대리인을 통한 권리 행사 시 「개인정보 처리 방법에 관한 고시(제2025-4호)」 별지 제11호 서식의 위임장을 제출하여야 합니다.</li>
+        <li>정보주체의 열람 및 처리정지 요구는 「개인정보 보호법」 제35조 제4항, 제37조 제2항에 의해 제한될 수 있습니다.</li>
+      </ul>
+    </section>
+
+    <!-- ── 제7조 ── -->
+    <section id="s7">
+      <h2><span class="sec-num">07</span> 개인정보의 파기</h2>
+      <p>앱은 보유 목적이 달성되거나 이용자가 삭제·초기화를 요청하는 경우 지체 없이 해당 개인정보를 파기합니다.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>파기 절차</th><th>파기 방법</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>기기 저장소 초기화 시</strong><br>조작 반전·언어 설정 등 일체 삭제</td>
+              <td>기기 내 저장소(localStorage/sessionStorage) 데이터 영구 삭제, 복구 불가</td>
+            </tr>
+            <tr>
+              <td><strong>앱 삭제 시</strong><br>기기에 남아있던 모든 설정 데이터 함께 삭제</td>
+              <td>운영체제(OS)의 앱 데이터 삭제 절차에 따름</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── 제8조 ── -->
+    <section id="s8">
+      <h2><span class="sec-num">08</span> 개인정보의 안전성 확보 조치</h2>
+      <p>앱은 「개인정보 보호법」 제29조에 따라 다음의 안전성 확보 조치를 취하고 있습니다.</p>
+
+      <ul class="doc-list">
+        <li><strong>개인정보 최소화:</strong> 회원가입·로그인 절차를 두지 않으며, 설정 정보가 원칙적으로 기기 내에서만 처리되도록 설계하여 서버 전송을 원칙적으로 차단</li>
+        <li><strong>관리적 조치:</strong> 개인정보 처리방침을 통한 처리 현황 공개, 취급 최소화</li>
+        <li><strong>기술적 조치:</strong> 게임 진행 정보(점수·웨이브 등)는 메모리에서만 처리하고 별도 서버 저장을 하지 않음</li>
+        <li><strong>이용자 통제권 보장:</strong> 앱 내 설정 초기화 기능을 제공하여 이용자가 본인의 설정 정보를 직접 관리할 수 있도록 함</li>
+      </ul>
+    </section>
+
+    <!-- ── 제9조 ── -->
+    <section id="s9">
+      <h2><span class="sec-num">09</span> 자동 수집 장치 및 광고 식별자</h2>
+      <p>앱은 별도의 자체 분석(Analytics) 도구를 사용하지 않습니다. 다만 보상형 광고 제공을 위해 다음과 같은 정보가 광고 SDK를 통해 처리될 수 있습니다.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>수집 주체</th><th>수집 항목</th><th>이용 목적</th><th>거부 방법</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Google AdMob</td>
+              <td>광고 식별자(ADID), 기기·OS 정보</td>
+              <td>보상형 광고 게재 및 시청 완료에 따른 부활(리바이브) 제공</td>
+              <td>기기 설정 → 광고 개인화 해제, 또는 앱에서 광고 시청(부활) 기능을 이용하지 않음</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="infobox">
+        <strong>맞춤형 광고:</strong> 광고 게재는 Google AdMob SDK가 자체적으로 수행하며, 앱 자체는 이용자의 행태정보를 별도로 수집·분석하지 않습니다.
+      </div>
+    </section>
+
+    <!-- ── 제10조 ── -->
+    <section id="s10">
+      <h2><span class="sec-num">10</span> 개인정보 보호책임자</h2>
+      <p>앱은 개인정보 처리에 관한 업무를 총괄하여 책임지고, 정보주체의 불만 처리 및 피해 구제를 위해 아래와 같이 개인정보 보호책임자를 지정합니다.</p>
+
+      <div class="contact-box">
+        <div class="contact-title">개인정보 보호책임자</div>
+        <div class="contact-row"><span class="cl">성 명</span><span>앱 개발자</span></div>
+        <div class="contact-row"><span class="cl">직 책</span><span>개인정보 보호책임자</span></div>
+        <div class="contact-row"><span class="cl">이메일</span><span>realtimeplus00@gmail.com</span></div>
+        <div class="contact-row"><span class="cl">처리 기한</span><span>접수 후 10일 이내 회신</span></div>
+      </div>
+    </section>
+
+    <!-- ── 제11조 ── -->
+    <section id="s11">
+      <h2><span class="sec-num">11</span> 정보주체의 권익침해 구제방법</h2>
+      <p>정보주체는 개인정보 침해로 인한 피해를 구제받기 위해 아래 기관에 분쟁 해결이나 상담 등을 신청할 수 있습니다.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>기관</th><th>연락처</th><th>홈페이지</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>개인정보보호위원회</strong><br>개인정보 침해 신고센터</td>
+              <td>(국번없이) 182</td>
+              <td>privacy.go.kr</td>
+            </tr>
+            <tr>
+              <td><strong>개인정보 분쟁조정위원회</strong></td>
+              <td>(국번없이) 1833-6972</td>
+              <td>www.kopico.go.kr</td>
+            </tr>
+            <tr>
+              <td><strong>대검찰청 사이버범죄수사단</strong></td>
+              <td>(국번없이) 1301</td>
+              <td>www.spo.go.kr</td>
+            </tr>
+            <tr>
+              <td><strong>경찰청 사이버안전국</strong></td>
+              <td>(국번없이) 182</td>
+              <td>cyberbureau.police.go.kr</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── 제12조 ── -->
+    <section id="s12">
+      <h2><span class="sec-num">12</span> 개인정보처리방침 변경</h2>
+      <p>이 개인정보처리방침은 <strong>2026년 08월 12일</strong>부터 적용됩니다.</p>
+      <p>법령 및 방침에 따라 내용이 추가·삭제 또는 수정될 수 있으며, 변경 시 앱 공지사항을 통해 사전 고지합니다. 중요 사항 변경 시에는 시행 <strong>7일 전</strong>, 정보주체의 권리에 중요한 변경(수집 항목, 이용 목적 등)은 시행 <strong>30일 전</strong>에 별도로 고지합니다.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>버전</th><th>시행일</th><th>주요 변경 내용</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>v1.0</td>
+              <td>2026. 08. 12.</td>
+              <td>최초 제정 — 2025년 4월 개인정보보호위원회 개정 지침(고시 제2025-4호) 기준 반영. 조작·언어 설정 저장, 광고 SDK(Google AdMob) 보상형 광고(부활 기능) 연동 사항 안내, 게임 플레이 정보(점수·웨이브 등) 비영구 처리 원칙 반영.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <strong>슈팅 서바이벌 게임 : 갓 스파이더</strong><br>
+  개인정보처리방침 v1.0 · 시행일 2026년 08월 12일<br>
+  본 방침은 「개인정보 보호법」 제30조 및 개인정보보호위원회 처리방침 작성지침(2025.4. 개정, 고시 제2025-4호)에 따라 작성되었습니다.<br><br>
+  문의 : realtimeplus00@gmail.com
+</footer>
+
+</div>
+
+<div id="lang-en" class="lang-block" style="display:none">
+<!-- ─── HEADER ─── -->
+<header>
+  <div class="logo"><span class="logo-icon">🕷️</span>Survival Shooter : God Spider</div>
+  <div class="header-meta">Privacy Policy · Compliant with 2025 Revised Guidelines, GDPR &amp; CCPA</div>
+</header>
+
+<!-- ─── HERO ─── -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">Privacy Policy</div>
+    <h1>Privacy Policy</h1>
+    <p>Survival Shooter : God Spider values your personal information<br>and strictly complies with the Personal Information Protection Act and related international regulations.</p>
+    <div class="hero-dates">
+      <div class="hero-date-item"><strong>Effective Date</strong> August 12, 2026</div>
+      <div class="hero-date-item"><strong>Basis</strong> PIPC Notice No. 2025-4</div>
+      <div class="hero-date-item"><strong>Law</strong> Personal Information Protection Act Art. 30</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MAIN ─── -->
+<div class="wrapper">
+
+  <!-- TOC -->
+  <nav class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#s1-en">Purpose of Processing and Items Collected</a></li>
+      <li><a href="#s2-en">Retention and Use Period</a></li>
+      <li><a href="#s3-en">Provision of Personal Information to Third Parties</a></li>
+      <li><a href="#s4-en">External Service (Ad SDK) Integration</a></li>
+      <li><a href="#s5-en">Processing of Gameplay Information</a></li>
+      <li><a href="#s6-en">Rights and Obligations of Data Subjects</a></li>
+      <li><a href="#s7-en">Destruction of Personal Information</a></li>
+      <li><a href="#s8-en">Measures to Ensure Security</a></li>
+      <li><a href="#s9-en">Automatic Collection Devices and Ad Identifiers</a></li>
+      <li><a href="#s10-en">Data Protection Officer</a></li>
+      <li><a href="#s11-en">Remedies for Infringement of Rights</a></li>
+      <li><a href="#s12-en">Changes to this Policy</a></li>
+      <li><a href="#s13-en">Additional Rights for EEA/UK Users (GDPR)</a></li>
+      <li><a href="#s14-en">Additional Rights for California Residents (CCPA/CPRA)</a></li>
+      <li><a href="#s15-en">Children's Privacy (COPPA) and Age Requirements</a></li>
+    </ol>
+  </nav>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <div class="label-pill">Personal Information Protection Act Art. 30 · Reflects the April 2025 Revised Guidelines</div>
+
+    <div class="notice-box">
+      <strong>📌 Notice</strong>&nbsp; Survival Shooter : God Spider (the "App") can be used without any sign-up. The App does not operate its own server, and settings such as control layout and language chosen by the user are stored only inside the user's device.
+    </div>
+
+    <div class="notice-box">
+      <strong>🌍 Notice for Users Outside Korea</strong>&nbsp; The App is distributed globally through the App Store and Google Play. In addition to the Republic of Korea's Personal Information Protection Act, this English version of the Policy has been supplemented to reflect the requirements of the EU/UK General Data Protection Regulation ("GDPR"), the California Consumer Privacy Act as amended by the California Privacy Rights Act ("CCPA/CPRA"), and the U.S. Children's Online Privacy Protection Act ("COPPA"). Where a right or obligation under these frameworks differs from Korean law, the additional provisions in Articles 13–15 below apply to users in the corresponding region.
+    </div>
+
+    <!-- ── Article 1 ── -->
+    <section id="s1-en">
+      <h2><span class="sec-num">01</span> Purpose of Processing and Items Collected</h2>
+      <p>In accordance with the Personal Information Protection Act, the App collects and uses personal information only to the minimum extent necessary to provide the service.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Purpose of Processing</th>
+              <th>Items Collected</th>
+              <th>Legal Basis</th>
+              <th>Retention Period</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Saving control settings (left/right control swap)</td>
+              <td>Control-swap setting value (ON/OFF)</td>
+              <td>Consent of data subject<br>(changed directly in the settings screen)</td>
+              <td>Until app deletion or settings reset<br>(stored on device)</td>
+            </tr>
+            <tr>
+              <td>Maintaining language preference</td>
+              <td>Selected language (Korean/English)</td>
+              <td>Consent of data subject<br>(language toggle button click)</td>
+              <td>Until the app is relaunched<br>(temporarily stored on device, never sent to a server)</td>
+            </tr>
+            <tr>
+              <td>Providing the revive feature after watching a rewarded ad</td>
+              <td>Advertising identifier (ADID) and other device information<br>(processed via the Google AdMob SDK)</td>
+              <td>Consent of data subject<br>(tapping the "watch ad" button)</td>
+              <td>Governed by Google AdMob's policy<br>(the App itself does not separately store this)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="infobox">
+        <strong>Note on declining consent:</strong> Control-swap and language settings are for user convenience — leaving them unset simply keeps the defaults (swap OFF, the language of your device/browser) and does not affect gameplay. Watching a rewarded ad (revive feature) is optional; declining to watch it does not affect normal gameplay (shooting, wave progression, etc.).
+      </div>
+    </section>
+
+    <!-- ── Article 2 ── -->
+    <section id="s2-en">
+      <h2><span class="sec-num">02</span> Retention and Use Period</h2>
+      <p>Because the App has no sign-up/login process and runs no server of its own, any settings changed by the user are, in principle, stored only inside the user's device (local/session storage) and are immediately deleted when the app is deleted or the device storage is reset.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-title"><span class="dot"></span>Control-swap setting</div>
+          <p>Stored in the device's local storage (localStorage) and never transmitted to a server. It persists until the user changes it again or deletes the app.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="dot"></span>Language setting</div>
+          <p>Temporarily stored in the device's session storage (sessionStorage) and is automatically cleared once the app (browser tab) is fully closed.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="dot"></span>Ad identifier and other device information</div>
+          <p>Processed by the Google AdMob SDK for the purpose of serving rewarded ads; the App itself does not collect or store this information. The retention period follows Google's own policy.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="dot"></span>Gameplay information such as score and wave</div>
+          <p>Never transmitted to a server or permanently stored; it disappears once the game ends or restarts. See Article 5 for details.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Article 3 ── -->
+    <section id="s3-en">
+      <h2><span class="sec-num">03</span> Provision of Personal Information to Third Parties</h2>
+      <p>The App does not, in principle, provide personal information to third parties. The following are exceptions:</p>
+      <ul class="doc-list">
+        <li>Where the data subject has given separate consent</li>
+        <li>Where required by specific provisions of law or unavoidable to comply with a legal obligation</li>
+        <li>Where the data subject or their legal representative is unable to express intent, or their address is unknown, making prior consent impossible, and it is clearly necessary for the life, body, or property interests of the data subject or a third party</li>
+      </ul>
+      <div class="infobox">
+        The App currently does not provide user information to any third party under separate contract. However, to provide rewarded ads, the Google AdMob SDK independently processes device information such as advertising identifiers, and this is handled anonymously without identifying any member. (See Article 4.)
+      </div>
+    </section>
+
+    <!-- ── Article 4 ── -->
+    <section id="s4-en">
+      <h2><span class="sec-num">04</span> External Service (Ad SDK) Integration</h2>
+      <p>Without operating its own server, the App calls the following external service (an advertising SDK) directly from the user's device to provide certain features. While this differs from a traditional outsourcing arrangement, it is disclosed here for transparency.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Recipient</th>
+              <th>Data Transmitted/Processed</th>
+              <th>Purpose of Use</th>
+              <th>Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Google AdMob (Google LLC)</td>
+              <td>Advertising identifier (ADID) and other device information</td>
+              <td>Serving rewarded ads and providing an in-game revive upon completed viewing</td>
+              <td>Google's separate privacy policy applies</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>For details on Google AdMob, please refer to Google's Privacy Policy (policies.google.com/privacy).</p>
+
+      <div class="infobox">
+        <strong>Cross-border transfer:</strong> Google AdMob is operated by Google LLC in the United States, so device information processed through the SDK may be transferred to and processed in the United States and other countries where Google operates. Google participates in the EU–U.S. Data Privacy Framework and relies on the European Commission's Standard Contractual Clauses (SCCs) and comparable safeguards to protect data transferred from the EEA, the UK, and Switzerland. You may contact us using the details in Article 10 for more information about these safeguards.
+      </div>
+    </section>
+
+    <!-- ── Article 5 ── -->
+    <section id="s5-en">
+      <h2><span class="sec-num">05</span> Processing of Gameplay Information</h2>
+      <p>The App is a shooting game in which the player pilots a ship (God Spider) to defeat enemies and progress through waves. Gameplay information generated in this process — such as score, kill count, wave stage, and health — is non-identifying game data and is processed as follows.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-title"><span class="dot"></span>How it's processed</div>
+          <p>Score, wave, kill count, and similar values are calculated and displayed only in volatile memory while the app is running, and are never sent to any storage or server.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="dot"></span>Retention and deletion</div>
+          <p>When the game is restarted or the app is closed, that session's progress information is immediately erased and cannot be recovered.</p>
+        </div>
+      </div>
+
+      <div class="infobox">
+        <strong>Note:</strong> If a future update adds server-connected features such as a leaderboard, this Privacy Policy will be revised in advance to separately disclose the new items collected and their purposes.
+      </div>
+    </section>
+
+    <!-- ── Article 6 ── -->
+    <section id="s6-en">
+      <h2><span class="sec-num">06</span> Rights and Obligations of Data Subjects</h2>
+      <p>Data subjects may exercise the following rights with respect to the App at any time.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Type of Right</th>
+              <th>Description</th>
+              <th>Relevant Provision</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Right to request access</strong></td>
+              <td>You may check the personal information (control/language settings, etc.) the App processes about you. (Directly viewable in the in-app "Settings" screen.)</td>
+              <td>PIPA Art. 35</td>
+            </tr>
+            <tr>
+              <td><strong>Right to request correction/deletion</strong></td>
+              <td>If setting information being processed (control swap, language, etc.) is inaccurate or unnecessary, you may correct, delete, or reset it directly within the App.</td>
+              <td>PIPA Art. 36</td>
+            </tr>
+            <tr>
+              <td><strong>Right to request suspension of processing</strong></td>
+              <td>You may request that processing of your setting information be temporarily suspended.</td>
+              <td>PIPA Art. 37</td>
+            </tr>
+            <tr>
+              <td><strong>Right to withdraw consent</strong></td>
+              <td>You may withdraw your consent to the storage of setting values and to ad viewing at any time (by resetting settings or not using the ad-viewing feature).</td>
+              <td>PIPA Art. 37</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="margin-top:1rem;">In accordance with Article 41(1) of the Enforcement Decree of the Personal Information Protection Act, rights may be exercised via <strong>email</strong>, and we will take action within <strong>10 days</strong> of receiving the request.</p>
+
+      <ul class="doc-list">
+        <li>For children under the age of 14, a legal representative may exercise these rights.</li>
+        <li>When exercising rights through an agent, a power of attorney in the form specified in Annex 11 of the "Notice on Methods of Processing Personal Information" (Notice No. 2025-4) must be submitted.</li>
+        <li>Requests for access and suspension of processing may be restricted under Articles 35(4) and 37(2) of the Personal Information Protection Act.</li>
+      </ul>
+    </section>
+
+    <!-- ── Article 7 ── -->
+    <section id="s7-en">
+      <h2><span class="sec-num">07</span> Destruction of Personal Information</h2>
+      <p>When the purpose of retention has been achieved or the user requests deletion/reset, the App destroys the relevant personal information without delay.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Destruction Procedure</th><th>Destruction Method</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>When device storage is reset</strong><br>All control-swap and language settings, etc. are deleted</td>
+              <td>Permanent deletion of data in device storage (localStorage/sessionStorage); unrecoverable</td>
+            </tr>
+            <tr>
+              <td><strong>When the app is deleted</strong><br>All remaining setting data on the device is deleted together</td>
+              <td>Follows the operating system's app-data deletion procedure</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Article 8 ── -->
+    <section id="s8-en">
+      <h2><span class="sec-num">08</span> Measures to Ensure Security</h2>
+      <p>In accordance with Article 29 of the Personal Information Protection Act, the App takes the following measures to ensure security.</p>
+
+      <ul class="doc-list">
+        <li><strong>Data minimization:</strong> No sign-up/login process is used, and setting information is designed to be processed only on the device, in principle blocking transmission to any server</li>
+        <li><strong>Administrative measures:</strong> Disclosure of processing status through this Privacy Policy, and minimization of handling</li>
+        <li><strong>Technical measures:</strong> Gameplay information (score, wave, etc.) is processed only in memory and never stored on a separate server</li>
+        <li><strong>Guaranteeing user control:</strong> An in-app settings-reset feature is provided so users can directly manage their own setting information</li>
+      </ul>
+    </section>
+
+    <!-- ── Article 9 ── -->
+    <section id="s9-en">
+      <h2><span class="sec-num">09</span> Automatic Collection Devices and Advertising Identifiers</h2>
+      <p>The App does not use any separate in-house analytics tool. However, to provide rewarded ads, the following information may be processed via the advertising SDK.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Collecting Party</th><th>Items Collected</th><th>Purpose of Use</th><th>How to Opt Out</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Google AdMob</td>
+              <td>Advertising identifier (ADID), device/OS information</td>
+              <td>Serving rewarded ads and providing an in-game revive upon completed viewing</td>
+              <td>Device Settings → disable ad personalization, or simply don't use the ad-viewing (revive) feature in the App</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="infobox">
+        <strong>Personalized ads:</strong> Ad serving is performed independently by the Google AdMob SDK; the App itself does not separately collect or analyze user behavioral data.
+      </div>
+
+      <div class="infobox">
+        <strong>iOS App Tracking Transparency:</strong> On devices running iOS 14.5 or later, the App displays Apple's App Tracking Transparency ("ATT") prompt before any identifier is used for cross-app tracking. If you choose "Ask App Not to Track," the App and AdMob will not use the Identifier for Advertisers (IDFA) for personalized advertising, and only non-personalized, contextual ads (or no rewarded ads) will be served.<br><br>
+        <strong>Android:</strong> You may limit ad personalization or reset your advertising ID at any time via Settings → Google → Ads on your Android device.
+      </div>
+    </section>
+
+    <!-- ── Article 10 ── -->
+    <section id="s10-en">
+      <h2><span class="sec-num">10</span> Data Protection Officer</h2>
+      <p>The App designates the following Data Protection Officer, who is responsible for overseeing personal information processing and handling complaints and remedies for data subjects. For purposes of the GDPR and CCPA, this same individual acts as the data controller/business responsible for the App.</p>
+
+      <div class="contact-box">
+        <div class="contact-title">Data Protection Officer</div>
+        <div class="contact-row"><span class="cl">Name</span><span>App Developer</span></div>
+        <div class="contact-row"><span class="cl">Title</span><span>Data Protection Officer</span></div>
+        <div class="contact-row"><span class="cl">Email</span><span>realtimeplus00@gmail.com</span></div>
+        <div class="contact-row"><span class="cl">Response Time</span><span>Within 10 days of receipt</span></div>
+      </div>
+    </section>
+
+    <!-- ── Article 11 ── -->
+    <section id="s11-en">
+      <h2><span class="sec-num">11</span> Remedies for Infringement of Rights</h2>
+      <p>Data subjects may apply to the following institutions for dispute resolution or consultation to seek remedies for damages caused by infringement of personal information.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Institution</th><th>Contact</th><th>Website</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Personal Information Protection Commission</strong><br>Privacy Infringement Report Center</td>
+              <td>182 (no area code)</td>
+              <td>privacy.go.kr</td>
+            </tr>
+            <tr>
+              <td><strong>Personal Information Dispute Mediation Committee</strong></td>
+              <td>1833-6972 (no area code)</td>
+              <td>www.kopico.go.kr</td>
+            </tr>
+            <tr>
+              <td><strong>Supreme Prosecutors' Office Cyber Crime Investigation Division</strong></td>
+              <td>1301 (no area code)</td>
+              <td>www.spo.go.kr</td>
+            </tr>
+            <tr>
+              <td><strong>National Police Agency Cyber Bureau</strong></td>
+              <td>182 (no area code)</td>
+              <td>cyberbureau.police.go.kr</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Article 12 ── -->
+    <section id="s12-en">
+      <h2><span class="sec-num">12</span> Changes to this Policy</h2>
+      <p>This Privacy Policy is effective as of <strong>August 12, 2026</strong>.</p>
+      <p>The content may be added to, removed, or modified in accordance with laws and internal policy; any changes will be announced in advance through in-app notices. Significant changes will be announced <strong>7 days</strong> before taking effect, and changes materially affecting data subjects' rights (items collected, purpose of use, etc.) will be announced <strong>30 days</strong> in advance.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Version</th><th>Effective Date</th><th>Key Changes</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>v1.0</td>
+              <td>Aug 12, 2026</td>
+              <td>Initial enactment — reflects the Personal Information Protection Commission's April 2025 revised guidelines (Notice No. 2025-4). Discloses storage of control/language settings and integration of the rewarded-ad SDK (Google AdMob, revive feature), and reflects the principle that gameplay information (score, wave, etc.) is processed non-persistently.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Article 13 (International) ── -->
+    <section id="s13-en">
+      <h2><span class="sec-num">13</span> Additional Rights for EEA/UK Users (GDPR)</h2>
+      <p>If you are located in the European Economic Area, the United Kingdom, or Switzerland, the following supplementary provisions apply to you under the General Data Protection Regulation and the UK GDPR.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Processing Activity</th><th>Legal Basis (GDPR Art. 6)</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Storing control-swap and language settings</td>
+              <td>Consent (Art. 6(1)(a)) — you may withdraw consent at any time by resetting the setting</td>
+            </tr>
+            <tr>
+              <td>Serving rewarded ads via Google AdMob</td>
+              <td>Consent (Art. 6(1)(a)), collected through the ad SDK's consent mechanism before any non-essential identifier is used</td>
+            </tr>
+            <tr>
+              <td>Core gameplay functions (score, wave, health, processed in-memory only)</td>
+              <td>Performance of the app's core function / legitimate interest (Art. 6(1)(f)); no personal data leaves your device</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="margin-top:1rem;">In addition to the rights listed in Article 6, EEA/UK/Swiss users have the following rights under the GDPR:</p>
+      <ul class="doc-list">
+        <li><strong>Right to data portability</strong> — request that setting data we hold be provided to you in a structured, commonly used, machine-readable format</li>
+        <li><strong>Right to object</strong> — object to processing based on legitimate interest, including ad-related processing carried out by the AdMob SDK</li>
+        <li><strong>Right to lodge a complaint</strong> — you may lodge a complaint with the data protection supervisory authority of your habitual residence, place of work, or the place of the alleged infringement (for example, the Irish Data Protection Commission for users in Ireland, or your national Data Protection Authority)</li>
+      </ul>
+
+      <div class="infobox">
+        <strong>No automated decision-making:</strong> The App does not carry out any automated decision-making or profiling that produces legal effects concerning you or similarly significantly affects you.
+      </div>
+    </section>
+
+    <!-- ── Article 14 (California) ── -->
+    <section id="s14-en">
+      <h2><span class="sec-num">14</span> Additional Rights for California Residents (CCPA/CPRA)</h2>
+      <p>If you are a California resident, the California Consumer Privacy Act, as amended by the California Privacy Rights Act, grants you the additional rights described below with respect to the personal information collected by the App.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Category of Personal Information</th><th>Collected?</th><th>Sold or Shared?</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Identifiers (advertising identifier / ADID)</td>
+              <td>Yes, only when the rewarded-ad feature is used</td>
+              <td>Not sold for money. May be considered "shared" for cross-context behavioral advertising through the Google AdMob SDK</td>
+            </tr>
+            <tr>
+              <td>Internet or other electronic network activity (in-app ad interaction)</td>
+              <td>Yes, only via the AdMob SDK</td>
+              <td>Same as above</td>
+            </tr>
+            <tr>
+              <td>Precise geolocation, biometric data, financial information, etc.</td>
+              <td>No</td>
+              <td>Not applicable</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="margin-top:1rem;">California residents may exercise the following rights by contacting us at the email address in Article 10:</p>
+      <ul class="doc-list">
+        <li><strong>Right to know</strong> — request the categories and specific pieces of personal information collected about you in the preceding 12 months</li>
+        <li><strong>Right to delete</strong> — request deletion of personal information we have collected from you, subject to certain exceptions</li>
+        <li><strong>Right to correct</strong> — request correction of inaccurate personal information</li>
+        <li><strong>Right to opt out of sale/sharing</strong> — opt out of any "sale" or "sharing" of personal information for cross-context behavioral advertising, by disabling ad personalization in your device settings or by not using the rewarded-ad (revive) feature</li>
+        <li><strong>Right to non-discrimination</strong> — we will not deny goods or services, charge different prices, or provide a different level of service because you exercised a CCPA right</li>
+      </ul>
+
+      <div class="infobox">
+        <strong>Verification:</strong> Because the App does not require sign-up and does not maintain user accounts, we may only be able to verify and respond to requests to the extent identifying information is available (e.g., a device-specific setting). We do not sell personal information for monetary consideration and have not done so in the preceding 12 months. We have not used or disclosed sensitive personal information for purposes requiring an opt-out right under the CPRA.
+      </div>
+    </section>
+
+    <!-- ── Article 15 (Children) ── -->
+    <section id="s15-en">
+      <h2><span class="sec-num">15</span> Children's Privacy (COPPA) and Age Requirements</h2>
+      <p>The App is intended for a general audience and is not directed to children under the age of 13. We do not knowingly collect personal information from children under 13 without verifiable parental consent, in accordance with the U.S. Children's Online Privacy Protection Act ("COPPA").</p>
+
+      <ul class="doc-list">
+        <li>Core gameplay does not require the input of any personal information, and no sign-up is necessary to play.</li>
+        <li>The rewarded-ad feature (Google AdMob) is configured to serve only non-personalized, contextual ads whenever the App determines, or a parent/guardian indicates, that the player may be a child, consistent with Google's Families policies.</li>
+        <li>If we become aware that we have inadvertently collected personal information from a child under 13 without the required parental consent, we will delete such information promptly.</li>
+        <li>For users in the EEA/UK, the age at which a child can independently consent to data processing under GDPR Article 8 ranges from 13 to 16 depending on the member state; where the applicable age has not been reached, consent of a parent or legal guardian is required before using features that involve any processing of personal information.</li>
+      </ul>
+
+      <p style="margin-top:1rem;">Parents or legal guardians who believe their child has provided personal information to the App may contact us at the email address listed in Article 10 to review, request deletion of, or refuse further collection of such information.</p>
+    </section>
+
+  </main>
+</div>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <strong>Survival Shooter : God Spider</strong><br>
+  Privacy Policy v1.0 · Effective Date August 12, 2026<br>
+  This policy was prepared in accordance with Article 30 of the Personal Information Protection Act and the Personal Information Protection Commission's Guidelines for Drafting Privacy Policies (revised April 2025, Notice No. 2025-4).<br><br>
+  Contact: realtimeplus00@gmail.com
+</footer>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     언어 자동 감지 스크립트
+     게임(index.html) 본편의 언어 감지 로직과 동일한 방식을 사용한다:
+     브라우저 언어(navigator.languages / navigator.language)에
+     'ko'로 시작하는 항목이 있으면 한국어, 그 외에는 영어로 표시한다.
+     ══════════════════════════════════════════════════════════════ -->
+<script>
+(function () {
+  function detectLang() {
+    try {
+      var langs = (navigator.languages && navigator.languages.length)
+        ? navigator.languages
+        : [navigator.language || navigator.userLanguage || 'en'];
+      for (var i = 0; i < langs.length; i++) {
+        if (/^ko/i.test(langs[i])) return 'ko';
+      }
+    } catch (e) { /* 감지 실패 시 영어로 대체 */ }
+    return 'en';
+  }
+
+  var lang = detectLang();
+  var koEl = document.getElementById('lang-ko');
+  var enEl = document.getElementById('lang-en');
+
+  if (lang === 'ko') {
+    if (koEl) koEl.style.display = '';
+    if (enEl) enEl.style.display = 'none';
+    document.documentElement.setAttribute('lang', 'ko');
+  } else {
+    if (koEl) koEl.style.display = 'none';
+    if (enEl) enEl.style.display = '';
+    document.documentElement.setAttribute('lang', 'en');
+    document.title = 'Privacy Policy - Survival Shooter : God Spider';
+  }
+})();
+</script>
+
+</body>
+</html>
